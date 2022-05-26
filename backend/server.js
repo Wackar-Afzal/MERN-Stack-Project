@@ -1,8 +1,12 @@
 const bodyParser = require("body-parser");
 const express =require("express");
+const colors=require("colors")
+const connectDB =require("./config/db.js")
 const dotenv =require("dotenv").config();
 const {errorHandler}=require("./middleware/errorsMiddleware")
 const port=process.env.PORT || 8000;
+
+connectDB();
 
 const app=express();
 
