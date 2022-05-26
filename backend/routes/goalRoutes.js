@@ -8,4 +8,5 @@ router.route('/').get(getGoals).post(setGoals);
 router.route('/:id').put(updateGoals).delete(deleteGoals);
 
 
+
 module.exports=router;
