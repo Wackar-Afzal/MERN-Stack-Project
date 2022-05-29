@@ -13,11 +13,11 @@ const app=express();
 // middleware
 
 app.use(express.json())
-app.use(bodyParser.json())
+app.use(express.urlencoded({extended:false}))
 
 app.use("/api/goals",require("./routes/goalRoutes"))
+app.use("/api/users",require("./routes/userRoutes"))
 app.use((req,res)=>{
-    
     res.status(404)
     throw new Error("wrong api adddress was hitted")
 })
