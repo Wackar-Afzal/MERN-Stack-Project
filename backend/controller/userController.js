@@ -9,7 +9,6 @@ const User=require("../models/userModel");
 const registerUser=asynHandler(async(req,res)=>{
 
     const {name,email,password}=req.body;
-    console.log(req.body);
 
     if(!name|| !email || !password){
         res.status(400)
@@ -74,12 +73,7 @@ const loginUser=asynHandler(async(req,res)=>{
 // @routes  Get /api/users/me
 // acess    Private
 const getMe=asynHandler(async(req,res)=>{
-    const {_id,name,email}=await User.findById(req.user.id)
-    res.status(200).json({
-        id:_id,
-        name,
-        email,
-    })
+    res.status(200).json(req.user)
 })
 
 // generate Jwt 

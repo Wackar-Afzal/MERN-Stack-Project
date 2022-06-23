@@ -16,12 +16,25 @@ const register=async(userData)=>{
     return response.data
 }
 
+// login user
+const login=async(userData)=>{
+    console.log("before axios")
+
+    const response= await axios.post(API_URL+"/login",userData)
+    console.log("after axios")
+    if(response.data){
+        localStorage.setItem("user",JSON.stringify(response.data))
+    }
+
+    return response.data
+}
 // ...............................logut user
 const logout=()=>{
     localStorage.removeItem('user')
 }
 const authService={
     register,
+    login,
     logout
 }
 
