@@ -4,15 +4,15 @@ const Goal=require("../models/goalsModel.js");
 const User=require("../models/userModel");
 
 // @des getGoals
-// @route GET /api/goal
+// @route GET /api/goals
 // @acess private
 const getGoals=asyncHandler(async(req,res)=>{
     const goals=await Goal.find({user:req.user.id})
-    res.status(200).json({message:"Get goal request Completed",goal:goals});
+    res.status(200).json(goals);  
 })
-
+  
 // @des setGoals
-// @route POST /api/goal
+// @route POST /api/goals
 // @acess private
 const setGoals=asyncHandler(async(req,res)=>{
     
@@ -23,10 +23,10 @@ const setGoals=asyncHandler(async(req,res)=>{
         
         const goal=await Goal.create({
             text:req.body.text,
-            user:req.user.id
+            user:req.user.id,
 
         })
-        res.status(200).json({messae:"set goal",user:`${goal}`})}
+        res.status(200).json(goal)}
         
 })
 
@@ -43,14 +43,13 @@ const updateGoals=asyncHandler(async(req,res)=>{
     }
 
     // Check for user
-    const user=await User.findById(req.user.id)
-    if(!user){
+    if(!req.user){
         res.status(401)
         throw new Error("user not found...... while updating goal")
     }
 
     // making sure the looged in user is updating his own goals
-    if(goal.user.toString()!==user.id){
+    if(goal.user.toString()!==req.user.id){
         res.status(401)
         throw new Error("user not authorized...you are not allowed to update other goals")
     }
@@ -68,19 +67,18 @@ const deleteGoals=asyncHandler(async(req,res)=>{
         throw new Error("Goal not find")
     }
     // Check for user
-    const user=await User.findById(req.user.id)
-    if(!user){
+    if(!req.user){
         res.status(401)
         throw new Error("user not found...... while updating goal")
     }
 
     // making sure the looged in user is updating his own goals
-    if(goal.user.toString()!==user.id){
+    if(goal.user.toString()!==req.user.id){
         res.status(401)
         throw new Error("user not authorized...you are not allowed to update other goals")
     }
     await Goal.findByIdAndDelete(req.params.id,{confirm:true})
-    res.status(200).json({message:`deleted goal ${goal.text}`})
+    res.status(200).json(goal._id)
 })
 
 
